@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
+    @StateObject var documentsModel = DocumentsModel()
     var body: some View {
-        Text("Historie skenování")
-            .font(.title)
-            .fontWeight(.heavy)
-            .padding(.top, 30)
-        Spacer()
+        VStack{
+            Text("Historie skenování")
+                .font(.title)
+                .fontWeight(.heavy)
+                .foregroundColor(Color.black)
+                .padding(.top, 30)
+            Spacer()
+        }
+        .background(Color.white)
+        
+       
     }
 }
 

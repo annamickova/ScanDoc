@@ -14,18 +14,25 @@ struct MainView: View {
                 Text("ScanDoc")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
-                Button(action: {
-                    // scan
-                }){
+                    .padding(.top, 30)
+                Spacer()
+                NavigationLink(destination: CameraView()) {
                     Text("Naskenovat doklad")
-                        .frame(maxWidth: .infinity)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.white)
                         .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                        
                 }
+                .padding(.horizontal, 30)
+                .padding(.bottom, 100)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundColor(.black)
             .background(Color.white)
-            .ignoresSafeArea()
+            
         }
         
     }
