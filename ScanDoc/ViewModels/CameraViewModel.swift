@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CameraViewModel: UIViewControllerRepresentable{
-    var controller = CameraViewController()
+    let controller = CameraViewController()
     
     func makeUIViewController(context: Context) -> CameraViewController{
         return controller
