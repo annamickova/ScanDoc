@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct CameraView: View {
-    var camera = CameraViewModel()
+    @ObservedObject var documentsModel: DocumentsModel
+    @State var camera: CameraViewModel
+    
+      init(documentsModel: DocumentsModel) {
+          self.documentsModel = documentsModel
+          self._camera = State(initialValue: CameraViewModel(documetsModel: documentsModel))
+      }
     var body: some View {
         NavigationView{
             VStack{
@@ -37,5 +43,5 @@ struct CameraView: View {
 
 
 #Preview {
-    CameraView()
+    CameraView(documentsModel: DocumentsModel())
 }

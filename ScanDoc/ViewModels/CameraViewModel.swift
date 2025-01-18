@@ -9,8 +9,10 @@ import SwiftUI
 
 struct CameraViewModel: UIViewControllerRepresentable{
     let controller = CameraViewController()
+    var documetsModel: DocumentsModel
     
     func makeUIViewController(context: Context) -> CameraViewController{
+        controller.documentsModel = documetsModel
         return controller
     }
     

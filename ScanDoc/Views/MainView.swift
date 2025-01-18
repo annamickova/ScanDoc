@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MainView: View {
+    
+    @StateObject var documentsModel: DocumentsModel
+    
     var body: some View {
         NavigationView{
             VStack(spacing: 20){
@@ -16,7 +19,7 @@ struct MainView: View {
                     .fontWeight(.heavy)
                     .padding(.top, 30)
                 Spacer()
-                NavigationLink(destination: CameraView()) {
+                NavigationLink(destination: CameraView(documentsModel: documentsModel)) {
                     Text("Naskenovat doklad")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
@@ -39,5 +42,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    MainView(documentsModel: DocumentsModel())
 }

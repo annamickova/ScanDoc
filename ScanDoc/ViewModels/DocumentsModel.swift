@@ -18,7 +18,8 @@ class DocumentsModel: ObservableObject {
     
     func addDocument(_ document: Document) {
         documents.append(document)
-        shouldNavigateToScanHistory = true  
+        shouldNavigateToScanHistory = true
+        print("document added, description:\(document.description)")
     }
     
     // Exaple documents
@@ -26,17 +27,17 @@ class DocumentsModel: ObservableObject {
          let example1 = Document(
              image: UIImage(systemName: "doc.text")!,
              date: Date().addingTimeInterval(-3600),
-             description: "Example Document 1"
+             description: "Document 1"
          )
          let example2 = Document(
              image: UIImage(systemName: "doc.richtext")!,
              date: Date().addingTimeInterval(-86400),
-             description: "Example Document 2"
+             description: "Document 2"
          )
          let example3 = Document(
              image: UIImage(systemName: "doc.on.doc")!,
              date: Date().addingTimeInterval(-604800),
-             description: "Example Document 3"
+             description: "Document 3"
          )
          documents.append(contentsOf: [example1, example2, example3])
      }

@@ -14,16 +14,27 @@ struct DocumentDetailView: View {
     var body: some View {
         VStack{
             Text("Detail dokumentu")
+                .font(.system(size: 30))
+                .fontWeight(.heavy)
+                .padding(.top, 30)
+                .padding(.bottom, 10)
+            
+            Text(document.description)
+                .font(.system(size: 20))
+                .fontWeight(.bold)
+                .padding(5)
             Text("\(document.date, formatter: dateFormatter)")
+                .font(.system(size: 20))
+                .fontWeight(.bold)
+                .padding(5)
         }
         VStack{
             Image(uiImage: document.image)
                 .resizable()
-                .scaledToFit()
+                .frame(width: 200, height: 200)
                 .padding()
-                            
-            Text(document.description)
         }
+        Spacer()
     }
 }
 

@@ -8,16 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var documentsModel = DocumentsModel()
     var body: some View {
         TabView {
-            MainView()
+            MainView(documentsModel: documentsModel)
                 .tabItem {
                     VStack {
                         Image(systemName: "document.viewfinder.fill")
                         Text("Skenovat")
                     }
                 }
-            ScanHistoryView()
+            ScanHistoryView(documentsModel: documentsModel)
                 .tabItem {
                     VStack {
                         Image(systemName: "document.circle.fill")
