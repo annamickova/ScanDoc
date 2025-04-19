@@ -9,23 +9,67 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var documentsModel = DocumentsModel()
+    @State var selectedIndex = 0
     var body: some View {
-        TabView {
-            MainView(documentsModel: documentsModel)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "document.viewfinder.fill")
-                        Text("Skenovat")
+        NavigationView{
+            ZStack {
+                VStack {
+                        ZStack {
+                            switch selectedIndex {
+                            case 0:
+                                MainView(documentsModel: documentsModel)
+                            case 1:
+                                ScanHistoryView(documentsModel: documentsModel)
+                            default:
+                                MainView(documentsModel: documentsModel)
+                            }
+                        }
+                        
                     }
-                }
-            ScanHistoryView(documentsModel: documentsModel)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "document.circle.fill")
-                        Text("Doklady")
+               
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Spacer()
+                            Image(systemName: "document.viewfinder.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .padding(5)
+                            
+                            Text("Skenovat")
+                                .font(.system(size: 12))
+                        }
+                        .foregroundColor(selectedIndex == 0 ? Color(.black) : Color.gray)
+                        .onTapGesture {
+                            selectedIndex = 0
+                        }
+                        Spacer()
+                        VStack {
+                            Spacer()
+                            Image(systemName: "document.viewfinder.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .padding(5)
+                            
+                            Text("Doklady")
+                                .font(.system(size: 12))
+                        }
+                        .foregroundColor(selectedIndex == 1 ? Color(.black) : Color.gray)
+                        .onTapGesture {
+                            selectedIndex = 1
+                        }
+                        Spacer()
+                      
+                     
+                       
                     }
-                }
+                
+            }
         }
+        .navigationBarHidden(true)
+
+        
+     .foregroundColor(Color.init(#colorLiteral(red: 0.1839159131, green: 0.1839159131, blue: 0.1839159131, alpha: 1)))
     }
 }
 

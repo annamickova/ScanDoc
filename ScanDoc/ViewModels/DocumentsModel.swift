@@ -22,7 +22,11 @@ class DocumentsModel: ObservableObject {
         print("document added, description:\(document.description)")
     }
     
-    // Exaple documents
+    func deleteDocumet(_documet: Document) {
+      //  documents.remove(at: Int)
+    }
+    
+    /// Adding example documents
     private func addExampleDocuments() {
          let example1 = Document(
              image: UIImage(systemName: "doc.text")!,

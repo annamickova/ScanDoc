@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
+import UIKit
 
-struct CameraViewModel: UIViewControllerRepresentable{
+struct CameraViewModel: UIViewControllerRepresentable {
     let controller = CameraViewController()
-    var documetsModel: DocumentsModel
-    
-    func makeUIViewController(context: Context) -> CameraViewController{
-        controller.documentsModel = documetsModel
+    var documentsModel: DocumentsModel
+
+    init(documentsModel: DocumentsModel) {
+        self.documentsModel = documentsModel
+    }
+
+    func makeUIViewController(context: Context) -> CameraViewController {
+        controller.documentsModel = documentsModel
         return controller
     }
-    
-    func updateUIViewController(_ uiViewController: CameraViewController, context: Context){}
-    
-    func capturePhoto(){
-        controller.capturePhoto()
+
+    func updateUIViewController(_ uiViewController: CameraViewController, context: Context) {}
+
+    func capturePhoto(completion: @escaping (UIImage?) -> Void) {
+        controller.capturePhoto(completion: completion)
+        
     }
 }
+

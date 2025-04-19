@@ -36,20 +36,21 @@ struct DocumentDetailView: View {
         }
         Spacer()
     }
+    /// Date formatter to display
+    private var dateFormatter: DateFormatter {
+           let formatter = DateFormatter()
+           formatter.dateStyle = .medium
+           formatter.timeStyle = .short
+           return formatter
+       }
 }
 
 #Preview {
     DocumentDetailView(document: Document(
         image: UIImage(systemName: "doc.on.doc")!,
         date: Date().addingTimeInterval(-604800), 
-        description: "Example Document 3"
+        description: "Příklad dokumentu"
     ))
 }
 
-/// Date formatter to display
-private var dateFormatter: DateFormatter {
-       let formatter = DateFormatter()
-       formatter.dateStyle = .medium
-       formatter.timeStyle = .short
-       return formatter
-   }
+

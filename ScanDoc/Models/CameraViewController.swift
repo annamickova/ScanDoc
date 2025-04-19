@@ -15,6 +15,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @Published var previewLayer: AVCaptureVideoPreviewLayer!
     @Published var photoOutput = AVCapturePhotoOutput()
     var documentsModel: DocumentsModel?
+    var photoCaptureCompletion: ((UIImage?) -> Void)?
     
     
     override func viewDidLoad() {
@@ -58,20 +59,20 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
-    func capturePhoto(){
+    func capturePhoto(completion: @escaping (UIImage?) -> Void) {
+        self.photoCaptureCompletion = completion
         let settings = AVCapturePhotoSettings()
                 photoOutput.capturePhoto(with: settings, delegate: self)
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let imageData = photo.fileDataRepresentation(),
-                      let uiImage = UIImage(data: imageData) else { return }
+              let uiImage = UIImage(data: imageData) else {
+            photoCaptureCompletion?(nil)
+            return
+        }
                 print("Photo captured!")
-        let doc = Document(
-              image: uiImage,
-              date: Date(),
-              description: "Document captured"
-          )
-        documentsModel?.addDocument(doc)
+       
+        photoCaptureCompletion?(uiImage)
     }
 }

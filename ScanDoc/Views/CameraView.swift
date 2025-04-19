@@ -10,17 +10,38 @@ import SwiftUI
 struct CameraView: View {
     @ObservedObject var documentsModel: DocumentsModel
     @State var camera: CameraViewModel
+    @State private var capturedImage: UIImage? = nil
+    @State private var isEditingPhoto = false
     
-      init(documentsModel: DocumentsModel) {
-          self.documentsModel = documentsModel
-          self._camera = State(initialValue: CameraViewModel(documetsModel: documentsModel))
-      }
+    init(documentsModel: DocumentsModel) {
+        self.documentsModel = documentsModel
+        self._camera = State(initialValue: CameraViewModel(documentsModel: documentsModel))
+    }
     var body: some View {
         NavigationView{
             VStack{
-                camera.edgesIgnoringSafeArea(.all)
+                camera.frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.width - 40)
+                    .clipped()
+                    .padding()
+
+                
                 Button(action: {
-                    camera.capturePhoto()
+                    camera.capturePhoto { image in
+                        if let original = image {
+                            let width = original.size.width
+                            let height = original.size.height
+                            
+                            let cropRect = CGRect(x: width * 0.1, y: height * 0.2, width: width * 0.8, height: height * 0.6)
+
+                            if let cropped = original.crop2(to: cropRect) {
+                                self.capturedImage = cropped
+                            } else {
+                                self.capturedImage = original
+                            }
+
+                            self.isEditingPhoto = true
+                        }
+                    }
                 }){
                     VStack{
                         Image(systemName: "largecircle.fill.circle")
@@ -30,18 +51,47 @@ struct CameraView: View {
                             .font(.headline)
                             .padding(.bottom)
                     }
-                    .frame(maxWidth: .infinity)
-                    .background(Color.black)
-                    .foregroundColor(.white)
+                    
                     
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black)
+                .foregroundColor(.white)
+            
+            
+                .sheet(isPresented: $isEditingPhoto) {
+                              if let image = capturedImage {
+                                  EditPhotoView(
+                                      isPresented: $isEditingPhoto,
+                                      image: image
+                                  ) { newDocument in
+                                      documentsModel.addDocument(newDocument)
+                                  }
+                              }
+                          }
+           
+
+            
         }
-        
     }
 }
+
+import UIKit
+
+extension UIImage {
+    func crop2(to rect: CGRect) -> UIImage? {
+        guard let cgImage = self.cgImage,
+              let croppedCGImage = cgImage.cropping(to: rect) else {
+            return nil
+        }
+        return UIImage(cgImage: croppedCGImage, scale: self.scale, orientation: self.imageOrientation)
+    }
+}
+
 
 
 #Preview {
     CameraView(documentsModel: DocumentsModel())
 }
+

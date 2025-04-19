@@ -16,6 +16,7 @@ struct MainView: View {
             VStack(spacing: 20){
                 Text("ScanDoc")
                     .font(.largeTitle)
+                    .foregroundColor(Color.init(#colorLiteral(red: 0.1839159131, green: 0.1839159131, blue: 0.1839159131, alpha: 1)))
                     .fontWeight(.heavy)
                     .padding(.top, 30)
                 Spacer()
@@ -25,8 +26,8 @@ struct MainView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                        .background(Color.init(#colorLiteral(red: 0.1839159131, green: 0.1839159131, blue: 0.1839159131, alpha: 1)))
+                        .cornerRadius(30)
                         
                 }
                 .padding(.horizontal, 30)
@@ -34,9 +35,10 @@ struct MainView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundColor(.black)
-            .background(Color.white)
+            .background(Image("backgroundBlue"))
             
         }
+        
         
     }
 }
