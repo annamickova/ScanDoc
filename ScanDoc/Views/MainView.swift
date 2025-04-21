@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
     
     @StateObject var documentsModel: DocumentsModel
+    @Binding var selectedIndex: Int
     
     var body: some View {
         NavigationView{
@@ -18,10 +19,10 @@ struct MainView: View {
                     .font(.largeTitle)
                     .foregroundColor(Color.init(#colorLiteral(red: 0.1839159131, green: 0.1839159131, blue: 0.1839159131, alpha: 1)))
                     .fontWeight(.heavy)
-                    .padding(.top, 30)
+                    .padding(.top, 50)
                 Spacer()
-                NavigationLink(destination: CameraView(documentsModel: documentsModel)) {
-                    Text("Naskenovat doklad")
+                NavigationLink(destination: CameraView(documentsModel: documentsModel, selectedIndex: $selectedIndex)) {
+                    Text("Scan document")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                         .padding()
@@ -44,5 +45,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView(documentsModel: DocumentsModel())
+    MainView(documentsModel: DocumentsModel(), selectedIndex: .constant(0))
 }

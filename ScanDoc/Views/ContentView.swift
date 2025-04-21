@@ -17,11 +17,11 @@ struct ContentView: View {
                         ZStack {
                             switch selectedIndex {
                             case 0:
-                                MainView(documentsModel: documentsModel)
+                                MainView(documentsModel: documentsModel, selectedIndex: $selectedIndex)
                             case 1:
                                 ScanHistoryView(documentsModel: documentsModel)
                             default:
-                                MainView(documentsModel: documentsModel)
+                                MainView(documentsModel: documentsModel, selectedIndex: $selectedIndex)
                             }
                         }
                         
@@ -36,7 +36,7 @@ struct ContentView: View {
                                 .frame(width: 25, height: 25)
                                 .padding(5)
                             
-                            Text("Skenovat")
+                            Text("Scan")
                                 .font(.system(size: 12))
                         }
                         .foregroundColor(selectedIndex == 0 ? Color(.black) : Color.gray)
@@ -46,12 +46,12 @@ struct ContentView: View {
                         Spacer()
                         VStack {
                             Spacer()
-                            Image(systemName: "document.viewfinder.fill")
+                            Image(systemName: "text.document.fill")
                                 .resizable()
-                                .frame(width: 25, height: 25)
+                                .frame(width: 20, height: 25)
                                 .padding(5)
                             
-                            Text("Doklady")
+                            Text("Documents")
                                 .font(.system(size: 12))
                         }
                         .foregroundColor(selectedIndex == 1 ? Color(.black) : Color.gray)

@@ -12,15 +12,17 @@ struct CameraView: View {
     @State var camera: CameraViewModel
     @State private var capturedImage: UIImage? = nil
     @State private var isEditingPhoto = false
+    @Binding var selectedIndex: Int
     
-    init(documentsModel: DocumentsModel) {
+    init(documentsModel: DocumentsModel, selectedIndex: Binding<Int>) {
         self.documentsModel = documentsModel
+        _selectedIndex = selectedIndex
         self._camera = State(initialValue: CameraViewModel(documentsModel: documentsModel))
     }
     var body: some View {
         NavigationView{
             VStack{
-                camera.frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.width - 40)
+                camera.frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.width - 20)
                     .clipped()
                     .padding()
 
@@ -58,20 +60,14 @@ struct CameraView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.black)
                 .foregroundColor(.white)
-            
-            
-                .sheet(isPresented: $isEditingPhoto) {
-                              if let image = capturedImage {
-                                  EditPhotoView(
-                                      isPresented: $isEditingPhoto,
-                                      image: image
-                                  ) { newDocument in
-                                      documentsModel.addDocument(newDocument)
-                                  }
-                              }
-                          }
-           
-
+        }
+        .sheet(isPresented: $isEditingPhoto) {
+            EditPhotoView(
+                isPresented: $isEditingPhoto,
+                image: capturedImage!, onSave: { newDocument in
+                    documentsModel.addDocument(newDocument)
+                }, selectedIndex: $selectedIndex
+            )
             
         }
     }
@@ -92,6 +88,6 @@ extension UIImage {
 
 
 #Preview {
-    CameraView(documentsModel: DocumentsModel())
+    CameraView(documentsModel: DocumentsModel(), selectedIndex: .constant(0))
 }
 

@@ -9,7 +9,19 @@ import SwiftUI
 
 struct Document: Identifiable{
     let id = UUID()
-    let image: UIImage
-    let date: Date
-    let description: String
+    var image: UIImage
+    var date: Date
+    var description: String
+    var recognizedText: String?
+
+      init(image: UIImage, date: Date, description: String) {
+          self.image = image
+          self.date = date
+          self.description = description
+          self.recognizedText = nil
+      }
+      
+    mutating func updateRecognizedText(_ text: String) {
+        self.recognizedText = text
+      }
 }

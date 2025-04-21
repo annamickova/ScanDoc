@@ -10,20 +10,22 @@ import UIKit
 
 class DocumentsModel: ObservableObject {
     @Published var documents: [Document] = []
-    @Published var shouldNavigateToScanHistory = false
+    @Published var navigateToScanHistory = false
+    private let scanner = DocumentScanner()
     
     init() {
+        self.documents = []
         addExampleDocuments()
     }
     
     func addDocument(_ document: Document) {
         documents.append(document)
-        shouldNavigateToScanHistory = true
+        navigateToScanHistory = true
         print("document added, description:\(document.description)")
     }
     
-    func deleteDocumet(_documet: Document) {
-      //  documents.remove(at: Int)
+    func deleteDocument(_document: Document) {
+       // documents.remove(document)
     }
     
     /// Adding example documents
@@ -45,4 +47,18 @@ class DocumentsModel: ObservableObject {
          )
          documents.append(contentsOf: [example1, example2, example3])
      }
+    
+    func scanDocument(_ document: Document) {
+         let image = document.image
+
+        scanner.recognizeText(from: image) { recognizedText in
+            let text = recognizedText.joined(separator: "\n")
+            DispatchQueue.main.async {
+                if let index = self.documents.firstIndex(where: { $0.id == document.id }) {
+                    self.documents[index].updateRecognizedText(text)
+                }
+            }
+        }
+    }
+
 }

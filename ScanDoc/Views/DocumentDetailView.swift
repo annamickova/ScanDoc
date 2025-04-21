@@ -10,6 +10,13 @@ import UIKit
 
 struct DocumentDetailView: View {
     let document: Document
+    @ObservedObject var documentsModel: DocumentsModel
+    
+    init(document: Document, documentsModel: DocumentsModel) {
+        self.document = document
+        self.documentsModel = documentsModel
+        documentsModel.scanDocument(document)
+    }
     
     var body: some View {
         VStack{
@@ -23,6 +30,7 @@ struct DocumentDetailView: View {
                 .font(.system(size: 20))
                 .fontWeight(.bold)
                 .padding(5)
+            
             Text("\(document.date, formatter: dateFormatter)")
                 .font(.system(size: 20))
                 .fontWeight(.bold)
@@ -35,22 +43,31 @@ struct DocumentDetailView: View {
                 .padding()
         }
         Spacer()
+        if let text = document.recognizedText {
+            Text("Recognized Text: \(text)")
+                .font(.caption)
+                .foregroundColor(.gray)
+        } else {
+            Text("No text recognized yet")
+                .font(.caption)
+                .foregroundColor(.gray)
+        }
     }
     /// Date formatter to display
     private var dateFormatter: DateFormatter {
-           let formatter = DateFormatter()
-           formatter.dateStyle = .medium
-           formatter.timeStyle = .short
-           return formatter
-       }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }
 }
 
 #Preview {
     DocumentDetailView(document: Document(
-        image: UIImage(systemName: "doc.on.doc")!,
-        date: Date().addingTimeInterval(-604800), 
+        image: UIImage(named: "test")!,
+        date: Date().addingTimeInterval(-604800),
         description: "Příklad dokumentu"
-    ))
+    ), documentsModel: DocumentsModel())
 }
 
 

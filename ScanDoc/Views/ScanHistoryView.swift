@@ -13,31 +13,34 @@ struct ScanHistoryView: View {
     var body: some View {
         NavigationView{
             VStack{
-                Text("Historie skenování")
+                Text("Scanned Documents")
                     .font(.title)
                     .font(.system(size: 30))
                     .fontWeight(.heavy)
-                    .foregroundColor(Color.black)
-                    .padding(.top, 90)
+                    .foregroundColor(Color.primary)
+                    .padding(.top, 60)
                 if documentsModel.documents.isEmpty{
-                    Text("Žádné dokumenty")
+                    Text("No documents")
+                        .font(.title)
+                        .foregroundStyle(.black)
                 }
                 else {
-                    List(documentsModel.documents) { document in NavigationLink(destination: DocumentDetailView(document: document)) {
+                    List(documentsModel.documents) { document in NavigationLink(destination: DocumentDetailView(document: document, documentsModel: documentsModel)) {
                         HStack {
                             Text(document.description)
+                                .foregroundStyle(.primary)
                         }
                         
                     }.swipeActions(content: {
                         Button{
-//                            documetsModel.deleteDocumet(_documet: <#T##Document#>)
+                            documentsModel.deleteDocument(_document: document)
                         } label: {
                             Image(systemName: "trash")
                         }
                         
                     }).tint(.red).swipeActions(content: {
                         Button{
-                            print("Sdílet")
+                            print("Share")
                         } label: {
                             Image(systemName: "square.and.arrow.up")
                         }
@@ -47,8 +50,9 @@ struct ScanHistoryView: View {
                     }
                 }
             }
-            .background(Color.white)
-            .ignoresSafeArea()
+            .background(Color.init(.systemBackground))
+            .scrollContentBackground(.hidden)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
        
     }
