@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct ScanDocApp: App {
+    init() {
+           FirebaseApp.configure()
+       }
     var body: some Scene {
         WindowGroup {
             ContentView()

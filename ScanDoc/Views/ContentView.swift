@@ -24,7 +24,6 @@ struct ContentView: View {
                                 MainView(documentsModel: documentsModel, selectedIndex: $selectedIndex)
                             }
                         }
-                        
                     }
                
                     HStack {

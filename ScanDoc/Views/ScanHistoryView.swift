@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScanHistoryView: View {
     @ObservedObject var documentsModel: DocumentsModel
- 
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -33,7 +33,7 @@ struct ScanHistoryView: View {
                         
                     }.swipeActions(content: {
                         Button{
-                            documentsModel.deleteDocument(_document: document)
+                            documentsModel.deleteDocument(document)
                         } label: {
                             Image(systemName: "trash")
                         }
@@ -54,7 +54,7 @@ struct ScanHistoryView: View {
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-       
+        
     }
 }
 

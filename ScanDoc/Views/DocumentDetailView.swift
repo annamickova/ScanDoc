@@ -11,47 +11,75 @@ import UIKit
 struct DocumentDetailView: View {
     let document: Document
     @ObservedObject var documentsModel: DocumentsModel
+    @State private var showCopiedAlert = false
     
     init(document: Document, documentsModel: DocumentsModel) {
         self.document = document
         self.documentsModel = documentsModel
-        documentsModel.scanDocument(document)
     }
     
     var body: some View {
-        VStack{
-            Text("Detail dokumentu")
-                .font(.system(size: 30))
-                .fontWeight(.heavy)
-                .padding(.top, 30)
-                .padding(.bottom, 10)
+        ScrollView{
+            VStack{
+                Text("Detail dokumentu")
+                    .font(.system(size: 30))
+                    .fontWeight(.heavy)
+                    .padding(.top, 30)
+                    .padding(.bottom, 10)
+                
+                Text(document.description)
+                    .font(.system(size: 20))
+                    .fontWeight(.bold)
+                    .padding(5)
+                
+                Text("\(document.date, formatter: dateFormatter)")
+                    .font(.system(size: 20))
+                    .fontWeight(.bold)
+                    .padding(5)
+            }
             
-            Text(document.description)
-                .font(.system(size: 20))
-                .fontWeight(.bold)
-                .padding(5)
             
-            Text("\(document.date, formatter: dateFormatter)")
-                .font(.system(size: 20))
-                .fontWeight(.bold)
-                .padding(5)
+            VStack{
+                if let img = document.image {
+                    Image(uiImage: img)
+                        .resizable()
+                        .scaledToFit()
+                        .padding()
+                }
+            }
+            Spacer()
+            VStack(alignment: .leading, spacing: 10) {
+                if let text = document.recognizedText {
+                    Text("Recognized Text: \(text)")
+                        .contextMenu {
+                            Button(action: {
+                                UIPasteboard.general.string = text
+                            }) {
+                                Label("Copy Text", systemImage: "doc.on.doc")
+                            }
+                        }
+                    
+                    Button(action: {
+                        UIPasteboard.general.string = text
+                        showCopiedAlert = true
+                    }) {
+                        Label("Copy Text", systemImage: "doc.on.doc")
+                    }
+                    .padding(.top, 5)
+                    .alert(isPresented: $showCopiedAlert) {
+                        Alert(title: Text("Copied!"), message: Text("Recognized text copied to clipboard."), dismissButton: .default(Text("OK")))
+                    }
+                } else {
+                    Text("No text recognized yet")
+                }
+            }
+            
         }
-        VStack{
-            Image(uiImage: document.image)
-                .resizable()
-                .frame(width: 200, height: 200)
-                .padding()
-        }
-        Spacer()
-        if let text = document.recognizedText {
-            Text("Recognized Text: \(text)")
-                .font(.caption)
-                .foregroundColor(.gray)
-        } else {
-            Text("No text recognized yet")
-                .font(.caption)
-                .foregroundColor(.gray)
-        }
+        .font(.system(size: 16))
+        .foregroundColor(.black)
+        .padding(.bottom, 70)
+        
+        
     }
     /// Date formatter to display
     private var dateFormatter: DateFormatter {

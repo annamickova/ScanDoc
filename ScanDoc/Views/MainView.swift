@@ -16,9 +16,8 @@ struct MainView: View {
         NavigationView{
             VStack(spacing: 20){
                 Text("ScanDoc")
-                    .font(.largeTitle)
+                    .font(.system(size: 40, weight: .heavy))
                     .foregroundColor(Color.init(#colorLiteral(red: 0.1839159131, green: 0.1839159131, blue: 0.1839159131, alpha: 1)))
-                    .fontWeight(.heavy)
                     .padding(.top, 50)
                 Spacer()
                 NavigationLink(destination: CameraView(documentsModel: documentsModel, selectedIndex: $selectedIndex)) {
