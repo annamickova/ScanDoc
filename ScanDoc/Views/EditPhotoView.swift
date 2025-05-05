@@ -6,26 +6,28 @@
 //
 
 import SwiftUI
+import Toast
 
 struct EditPhotoView: View {
     @Binding var isPresented: Bool
-    @State var image: UIImage
-    @State private var title: String = ""
-    
-    var onSave: (Document) -> Void
+        @State var image: UIImage
+        @State private var title: String = ""
+
+        var onSave: (Document) -> Void
     
     @State private var croppedImage: UIImage?
+    @State private var isCropped: Bool = false
     @Binding var selectedIndex: Int
     
     @State private var zoomScale: CGFloat = 1.0
     @State private var imageOffset: CGSize = .zero
     @State private var dragOffset: CGSize = .zero
-    
+
     var body: some View {
         VStack {
             GeometryReader { geometry in
                 ZStack {
-                    let image = UIImage(named: "yourImageName") ?? self.image
+                    let image =  self.image
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
@@ -57,6 +59,10 @@ struct EditPhotoView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 Button("Crop Image") {
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let window = windowScene.windows.first {
+                        window.makeToast("Document Cropped", duration: 1.5, position: .center)
+                    }
                     let cropRect = CGRect(
                         x: (geometry.size.width - 200) / 2,
                         y: (geometry.size.height - 200) / 2,
@@ -71,6 +77,7 @@ struct EditPhotoView: View {
             
             TextField("Enter title...", text: $title)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .foregroundStyle(.primary)
                 .padding()
             
             HStack {
@@ -83,7 +90,11 @@ struct EditPhotoView: View {
                 Spacer()
                 
                 Button("Save") {
-                    let newDocument = Document(image: croppedImage ?? image, date: Date(), description: title)
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let window = windowScene.windows.first {
+                        window.makeToast("Document Saved", duration: 1.5, position: .center)
+                    }
+                    let newDocument = Document(image: croppedImage ?? image, date: Date(), description: title.isEmpty ? "Document" : title)
                     onSave(newDocument)
                     isPresented = false
                     selectedIndex = 1
@@ -93,36 +104,37 @@ struct EditPhotoView: View {
             }
             .padding()
         }
-        .padding()}
+        .padding()
+    }
     
     func cropVisiblePart(from image: UIImage, in viewSize: CGSize, cropRect: CGRect, zoomScale: CGFloat, imageOffset: CGSize) -> UIImage? {
         let imageSize = image.size
         let scale = imageSize.width / viewSize.width
-        
+
         let scaledCropOriginX = (cropRect.origin.x - imageOffset.width) * scale / zoomScale
         let scaledCropOriginY = (cropRect.origin.y - imageOffset.height) * scale / zoomScale
         let scaledCropWidth = cropRect.size.width * scale / zoomScale
         let scaledCropHeight = cropRect.size.height * scale / zoomScale
-        
+
         let finalCropRect = CGRect(
             x: scaledCropOriginX,
             y: scaledCropOriginY,
             width: scaledCropWidth,
             height: scaledCropHeight
         )
-        
+
         guard let cgImage = image.cgImage?.cropping(to: finalCropRect) else {
             return nil
         }
-        
+
         return UIImage(cgImage: cgImage, scale: image.scale, orientation: image.imageOrientation)
     }
-    
+
 }
 
 #Preview {
-    @State var isPresented = true
-    
+    @Previewable @State var isPresented = true
+
     EditPhotoView(
         isPresented: .constant(isPresented),
         image: UIImage(systemName: "heart")!,

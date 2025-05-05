@@ -10,6 +10,16 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var documentsModel = DocumentsModel()
     @State var selectedIndex = 0
+    @State var isFirstLaunch: Bool
+    
+    init() {
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "HasLaunchedBefore")
+        _isFirstLaunch = State(initialValue: !hasLaunchedBefore)
+        if isFirstLaunch {
+            selectedIndex = 2
+        }
+    }
+    
     var body: some View {
         NavigationView{
             ZStack {
@@ -20,6 +30,12 @@ struct ContentView: View {
                                 MainView(documentsModel: documentsModel, selectedIndex: $selectedIndex)
                             case 1:
                                 ScanHistoryView(documentsModel: documentsModel)
+                            case 2:
+                                FirstLaunchView {
+                                isFirstLaunch = false
+                                UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
+                                    selectedIndex = 0
+                            }
                             default:
                                 MainView(documentsModel: documentsModel, selectedIndex: $selectedIndex)
                             }
@@ -38,7 +54,8 @@ struct ContentView: View {
                             Text("Scan")
                                 .font(.system(size: 12))
                         }
-                        .foregroundColor(selectedIndex == 0 ? Color(.black) : Color.gray)
+                        .fontWeight(.bold)
+                        .foregroundColor(selectedIndex == 0 ? Color.primary : Color.gray)
                         .onTapGesture {
                             selectedIndex = 0
                         }
@@ -53,7 +70,8 @@ struct ContentView: View {
                             Text("Documents")
                                 .font(.system(size: 12))
                         }
-                        .foregroundColor(selectedIndex == 1 ? Color(.black) : Color.gray)
+                        .fontWeight(.bold)
+                        .foregroundColor(selectedIndex == 1 ? Color.primary  : Color.gray)
                         .onTapGesture {
                             selectedIndex = 1
                         }

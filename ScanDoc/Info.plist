@@ -6,6 +6,12 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 <string>We need access to your camera to capture photos.</string>
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+
 
 </dict>
 </plist>

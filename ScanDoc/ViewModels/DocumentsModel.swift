@@ -21,34 +21,77 @@ class DocumentsModel: ObservableObject {
     
     init() {
         fetchDocuments()
-        //addExampleDocuments()
+
     }
     
+    /// Function for adding document into Firestore database.
     func addDocument(_ document: Document) {
         do {
-            try db.collection("documents").document(document.id ?? UUID().uuidString).setData(from: document)
-            fetchDocuments()
-        } catch {
-            print("Error saving document: \(error)")
+            let ref = db.collection("documents").document()
+            var documentWithID = document
+            documentWithID.id = ref.documentID
+
+            do {
+                try ref.setData(from: documentWithID)
+                fetchDocuments()
+            } catch {
+                print("Error saving document: \(error)")
+            }
+
         }
     }
     
-    func deleteDocument(_ document: Document) {
-        if let documentID = document.id{
-            db.collection("documents").document(documentID).delete { error in
+    
+    /// Deletes document from firestore
+    /// - Parameters:
+    ///   - id: Id of the document.
+    ///   - completion: Closure if delete was successful.
+    func deleteDocument(_ id: String, completion: @escaping (Bool) -> Void) {
+       
+        print("Attempting to delete document with ID: \(id)")
+        
+        DispatchQueue.main.async{
+            self.db.collection("documents").document(id).delete { error in
+                print("Inside delete closure")
                 if let error = error {
                     print("Error deleting document from Firestore: \(error.localizedDescription)")
+                    completion(false)
                 } else {
                     print("Document successfully deleted from Firestore")
+                    self.fetchDocuments()
                     DispatchQueue.main.async {
-                        self.documents.removeAll { $0.id == documentID }
-                        self.fetchDocuments()
+                        self.documents.removeAll { $0.id == id }
                     }
+                    self.fetchDocuments()
+                        completion(true)
                 }
             }
         }
+        
     }
+
+        
+//        print("doing something")
+//        
+//        let documentID = document.id!
+//        
+//        print(documentID)
+//        db.collection("documents").document(documentID).delete { error in
+//            if let error = error {
+//                print("Error deleting document: \(error.localizedDescription)")
+//                completion(false)
+//            } else {
+//                print("Document successfully deleted from Firestore")
+//                DispatchQueue.main.async {
+//                    self.documents.removeAll { $0.id == documentID }
+//                }
+//                completion(true)
+//            }
+//        }
     
+
+    
+    /// Loading documents from database.
     func fetchDocuments(){
         db.collection("documents").order(by: "date", descending: true).getDocuments { snapshot, error in
             if let error = error {
@@ -61,6 +104,8 @@ class DocumentsModel: ObservableObject {
         }
     }
     
+    /// Function for scanning documents.
+    /// - Parameter document: Document we want to scan.
     func scanDocument(_ document: Document) {
         guard let image = document.image else { return }
         let scanner = DocumentScanner()
@@ -70,10 +115,11 @@ class DocumentsModel: ObservableObject {
                 self.documents[index].recognizedText = text.joined(separator: "\n")
             
                 if let updated = try? Firestore.Encoder().encode(self.documents[index]),
-                   let id = document.id {
+                  let id = document.id {
                     self.db.collection("documents").document(id).setData(updated, merge: true)
                 }
             }
+            self.fetchDocuments()
         }
     }
     

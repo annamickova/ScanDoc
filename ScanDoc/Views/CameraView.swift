@@ -22,13 +22,9 @@ struct CameraView: View {
     var body: some View {
         NavigationView{
             VStack{
-                GeometryReader { geometry in
-                    camera
-                        .frame(width: geometry.size.width - 40, height: geometry.size.width - 20)
-                        .clipped()
-                        .padding()
-                }
-
+                camera.frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.width - 20)
+                    .clipped()
+                    .padding()
 
                 
                 Button(action: {
@@ -57,7 +53,6 @@ struct CameraView: View {
                             .font(.headline)
                             .padding(.bottom)
                     }
-                    .padding(.bottom, 30)
                     
                     
                 }
@@ -67,19 +62,15 @@ struct CameraView: View {
                 .foregroundColor(.white)
         }
         .sheet(isPresented: $isEditingPhoto) {
-            if let imageToEdit = capturedImage {
-                EditPhotoView(
-                    isPresented: $isEditingPhoto,
-                    image: imageToEdit,
-                    onSave: { newDocument in
-                        documentsModel.scanDocument(newDocument)
-                        documentsModel.addDocument(newDocument)
-                    },
-                    selectedIndex: $selectedIndex
-                )
-            }
-        }
-
+                      if let image = capturedImage {
+                          EditPhotoView(
+                              isPresented: $isEditingPhoto,
+                              image: image, onSave: { newDocument in
+                                  documentsModel.addDocument(newDocument)
+                              }, selectedIndex: $selectedIndex
+                          )
+                      }
+                  }
     }
 }
 

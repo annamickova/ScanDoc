@@ -10,12 +10,18 @@ import Vision
 
 class DocumentScanner {
     
+    /// Function tries to read text from given image (OCR) using Vision framework.
+    /// - Parameters:
+    ///   - image: UIImage from which to recognize text
+    ///   - completion: A closure that recieves an array of recognized text
     func recognizeText(from image: UIImage, completion: @escaping ([String]) -> Void)  {
         guard let cgImage = image.cgImage else {
             print("Failed to get CGImage from UIImage")
             completion([])
             return
         }
+        
+        // Create a request handler
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let request = VNRecognizeTextRequest { request, error in
             guard error == nil else {
@@ -24,6 +30,7 @@ class DocumentScanner {
                 return
             }
             
+            // Create a text request for recognition
             let observations = request.results as? [VNRecognizedTextObservation] ?? []
             let recognizedStrings = observations.compactMap { observation in
                 observation.topCandidates(1).first?.string

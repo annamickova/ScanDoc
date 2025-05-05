@@ -18,6 +18,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var photoCaptureCompletion: ((UIImage?) -> Void)?
     
     
+    /// Sets up the camera and starts preview
     override func viewDidLoad() {
          super.viewDidLoad()
          configureCaptureSession()
@@ -29,11 +30,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
          captureSession.startRunning()
      }
     
+    /// Configure AVCaptureSession with default video device
     func configureCaptureSession() {
         captureSession = AVCaptureSession()
         
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
-            print("No video device available")
+            print("No camera device available")
             return
         }
         
@@ -59,12 +61,15 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    /// Starts capturing photo
+    /// - Parameter completion: Acording to result of captured image - UIImage or nil
     func capturePhoto(completion: @escaping (UIImage?) -> Void) {
         self.photoCaptureCompletion = completion
         let settings = AVCapturePhotoSettings()
                 photoOutput.capturePhoto(with: settings, delegate: self)
     }
     
+    /// Method called when photo has been captured
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let imageData = photo.fileDataRepresentation(),
               let uiImage = UIImage(data: imageData) else {

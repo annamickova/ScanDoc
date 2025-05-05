@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0CB2402DBF794E0019A3B0 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0CB23F2DBF794E0019A3B0 /* Toast */; };
+		0C0CB2922DC510DB0019A3B0 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0CB2912DC510DB0019A3B0 /* FirebaseDatabase */; };
 		0C6E6A572DB69F0B008BA3D6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6E6A562DB69F0B008BA3D6 /* FirebaseAnalytics */; };
 		0C6E6A592DB6A0C2008BA3D6 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6E6A582DB6A0C2008BA3D6 /* FirebaseCore */; };
 		0C6E6A5B2DB6A0C2008BA3D6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6E6A5A2DB6A0C2008BA3D6 /* FirebaseFirestore */; };
@@ -72,9 +74,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C0CB2922DC510DB0019A3B0 /* FirebaseDatabase in Frameworks */,
 				0C6E6A592DB6A0C2008BA3D6 /* FirebaseCore in Frameworks */,
 				0C6E6A5D2DB6A0C2008BA3D6 /* FirebaseStorage in Frameworks */,
 				0C6E6A572DB69F0B008BA3D6 /* FirebaseAnalytics in Frameworks */,
+				0C0CB2402DBF794E0019A3B0 /* Toast in Frameworks */,
 				0C6E6A5B2DB6A0C2008BA3D6 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +144,8 @@
 				0C6E6A582DB6A0C2008BA3D6 /* FirebaseCore */,
 				0C6E6A5A2DB6A0C2008BA3D6 /* FirebaseFirestore */,
 				0C6E6A5C2DB6A0C2008BA3D6 /* FirebaseStorage */,
+				0C0CB23F2DBF794E0019A3B0 /* Toast */,
+				0C0CB2912DC510DB0019A3B0 /* FirebaseDatabase */,
 			);
 			productName = ScanDoc;
 			productReference = 0C0FBEE52CD62DB500867BFA /* ScanDoc.app */;
@@ -225,6 +231,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0C6E6A552DB69F0B008BA3D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0C0CB23E2DBF794E0019A3B0 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0C0FBEE62CD62DB500867BFA /* Products */;
@@ -597,6 +604,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0C0CB23E2DBF794E0019A3B0 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 		0C6E6A552DB69F0B008BA3D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -608,6 +623,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0C0CB23F2DBF794E0019A3B0 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0CB23E2DBF794E0019A3B0 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+		0C0CB2912DC510DB0019A3B0 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C6E6A552DB69F0B008BA3D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
 		0C6E6A562DB69F0B008BA3D6 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0C6E6A552DB69F0B008BA3D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
